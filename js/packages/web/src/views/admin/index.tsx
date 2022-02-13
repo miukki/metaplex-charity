@@ -73,8 +73,8 @@ export const AdminView = () => {
         console.log({search_term})
 
 
-        const PK = process.env.REACT_APP_CHARITY_PK;
-        const SK = process.env.REACT_APP_CHARITY_SK;
+        const PK = process.env.NEXT_PUBLIC_CHARITY_PK;
+        const SK = process.env.NEXT_PUBLIC_CHARITY_SK;
         
         const encodedString = new Buffer(`${PK}` + ':' + `${SK}`).toString('base64');
 

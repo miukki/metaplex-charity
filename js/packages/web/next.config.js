@@ -29,6 +29,8 @@ module.exports = withPlugins(plugins, {
   },
 
   env: {
+    NEXT_PUBLIC_CHARITY_PK: process.env.REACT_APP_CHARITY_PK,
+    NEXT_PUBLIC_CHARITY_SK: process.env.REACT_APP_CHARITY_SK,
     NEXT_PUBLIC_STORE_OWNER_ADDRESS:
       process.env.STORE_OWNER_ADDRESS ||
       process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS,
