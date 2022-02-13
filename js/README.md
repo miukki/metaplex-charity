@@ -25,7 +25,7 @@ Then, test that css transpiling is working:
 
 `lerna exec npm watch-css-src --scope @oyster/common` and verify css files appear next to their less counterparts in src.
 
-## ⚠️ Warning
+## ⚠️ Warning   
 
 Any content produced by Solana, or developer resources that Solana provides, are for educational and inspiration purposes only. Solana does not encourage, induce or sanction the deployment of any such applications in violation of applicable laws or regulations.
 

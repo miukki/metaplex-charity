@@ -11,7 +11,7 @@
   "keywords": [],
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=14.17"
+    "node": ">=14.18"
   },
   "scripts": {
     "bootstrap": "lerna link && lerna bootstrap",
