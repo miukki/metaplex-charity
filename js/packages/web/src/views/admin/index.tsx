@@ -12,7 +12,6 @@ import {
   Divider,
   Select} from 'antd';
 
-import debounce from 'lodash/debounce';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import { useMeta } from '../../contexts';
 import {
@@ -69,7 +68,7 @@ export const AdminView = () => {
   }, [store, storeAddress, wallet.publicKey]);
   console.log('@admin', wallet.connected, storeAddress, isLoading, store);
 
-      const fetchCharities = async (search_term: string) => {
+      const fetchCharities = async (search_term: string, category: string | undefined) => {
         console.log({search_term})
 
 
@@ -82,14 +81,15 @@ export const AdminView = () => {
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Authorization", `Basic ${encodedString}`);
+        const ctpref = category ? `&categories[]=${category}` : ``;
+        const url = new URL(`https://api.getchange.io/api/v1/nonprofits?public_key=${PK}&search_term=${search_term}${ctpref}`)
+        console.log({url: url.toString()})
 
-
-        const response = await fetch(`https://api.getchange.io/api/v1/nonprofits?search_term=${search_term}&page=10`, {
+        const response = await fetch(url.toString(), {
           method: 'GET',
           headers,
         });
         const charities = await response?.json()
-        console.log({charities})
         return charities
 
       }
@@ -207,6 +207,7 @@ const useDebouncedSearch = (searchFunction) => {
 
   // Handle the input text state
   const [inputText, setInputText] = useState('');
+  const [category, setCategory] = useState('');
 
   // Debounce the original search async function
   const debouncedSearchFunction = useConstant(() =>
@@ -218,20 +219,22 @@ const useDebouncedSearch = (searchFunction) => {
   // fire a new request on each keystroke
   const searchResults = useAsync(
     async () => {
-      if (inputText.length === 0) {
+      if (inputText?.length === 0 && category?.length === 0) {
         return [];
       } else {
-        return debouncedSearchFunction(inputText);
+        return debouncedSearchFunction(inputText, category);
       }
     },
-    [debouncedSearchFunction, inputText]
+    [debouncedSearchFunction, inputText, category]
   );
 
   // Return everything needed for the hook consumer
   return {
     inputText,
     setInputText,
-    searchResults,
+    category,
+    setCategory,
+    searchResults
   };
 };
 
@@ -336,9 +339,11 @@ function InnerAdminView({
     },
   ];
  
-  const useSearchStarwarsHero = () => useDebouncedSearch((text: string) => fetchCharities(text))
-  const { inputText, setInputText, searchResults } = useSearchStarwarsHero();
- const [selectedCharity, setSelectedCharity] = React.useState(``);
+  const useSearchStarwarsHero = () => useDebouncedSearch((text: string, category: string | undefined) => {
+    return fetchCharities(text, category)
+  })
+  const { inputText, setInputText, category, setCategory, searchResults } = useSearchStarwarsHero();
+  const [selectedCharity, setSelectedCharity] = React.useState(``);
 
 
   console.log({ loading: searchResults?.loading, result: searchResults?.result?.nonprofits, selectedCharity})
@@ -410,12 +415,33 @@ function InnerAdminView({
       <div>
 
         <h1>Search charity</h1>{' '}
+
+
         <Input
-        id="otp-text-field"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        style={{ marginRight: 10, width: `20% ` }}
-      />
+          id="otp-text-field"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          style={{ marginRight: 10, width: `20% ` }}
+        />
+
+
+          <Select
+          onSelect={(cat) => {
+           if (cat) {
+             setCategory(cat);
+           }
+          }}
+          value={`${category}`}
+          style={{ marginRight: 10, marginBottom: 20, width: `30% `, color: `black` }}
+        >
+
+          {(['arts and culture', 'education', 'environment', 'animals', 'healthcare', 'human services', 'international affairs', 'public benefit', 'religion', 'mutual benefit', 'unclassified']).map((name, index) => (
+            <Select.Option value={`${name}`} key={`${name}`} id={`${name}`}>
+              {name?.toUpperCase()}
+            </Select.Option>
+          ))}
+        </Select>  
+
 
         <Select
           onSelect={(sol, {key}) => {
@@ -425,12 +451,14 @@ function InnerAdminView({
            }
           }}
           value={selectedCharity}
-          style={{ marginBottom: 20, width: `30% `, color: `black` }}
+          style={{ marginBottom: 20, width: `100% `, color: `black` }}
         >
 
-          {(searchResults?.result?.nonprofits || []).map(({ name, crypto, id }) => (
+          {(searchResults?.result?.nonprofits || []).map(({ name, mission, crypto, id }) => (
             <Select.Option value={`${crypto?.solana_address}`} key={`${crypto?.solana_address}`} id={`${crypto?.solana_address}`}>
-              {name}{` (${crypto?.solana_address})`}
+              {name}<br/>
+              {mission}<br/>
+              {`SOL (${crypto?.solana_address})`}
             </Select.Option>
           ))}
         </Select>    
