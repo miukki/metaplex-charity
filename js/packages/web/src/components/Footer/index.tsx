@@ -1,38 +1,30 @@
-import React from 'react';
-import { SendOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { footerConf } from './footerData';
-import { LABELS } from '../../constants';
+import React from 'react'
+import {SendOutlined} from '@ant-design/icons'
+import {Button, Form, Input} from 'antd'
+// import {footerConf} from './footerData'
+// import {LABELS} from '../../constants'
 
 export const Footer = () => {
   const validateMessages = {
     types: {
       email: 'Input is not a valid email!',
     },
-  };
+  }
 
-  const CustomForm = (props: {
-    status: any;
-    message: any;
-    onValidated: any;
-  }) => {
-    let email: any;
+  const CustomForm = (props: {status: any; message: any; onValidated: any}) => {
+    let email: any
     const submit = (values: any) => {
-      email = values.user.email;
+      email = values.user.email
       email &&
         email.indexOf('@') > -1 &&
         props.onValidated({
           EMAIL: email,
           // NAME: name.value
-        });
-    };
+        })
+    }
     return (
       <>
-        <Form
-          className={'footer-sign-up'}
-          onFinish={submit}
-          validateMessages={validateMessages}
-        >
+        <Form className={'footer-sign-up'} onFinish={submit} validateMessages={validateMessages}>
           <Form.Item
             name={['user', 'email']}
             rules={[
@@ -40,7 +32,7 @@ export const Footer = () => {
                 type: 'email',
               },
             ]}
-            style={{ display: 'flex !important' }}
+            style={{display: 'flex !important'}}
           >
             <Input
               className={'footer-input'}
@@ -63,40 +55,30 @@ export const Footer = () => {
               display: 'inline-block',
             }}
           >
-            {props.status === 'sending' && (
-              <div style={{ color: 'blue' }}>Loading...</div>
-            )}
+            {props.status === 'sending' && <div style={{color: 'blue'}}>Loading...</div>}
             {props.status === 'error' && (
-              <div
-                style={{ color: 'red' }}
-                dangerouslySetInnerHTML={{ __html: props.message }}
-              />
+              <div style={{color: 'red'}} dangerouslySetInnerHTML={{__html: props.message}} />
             )}
             {props.status === 'success' && (
-              <div
-                style={{ color: 'green' }}
-                dangerouslySetInnerHTML={{ __html: props.message }}
-              />
+              <div style={{color: 'green'}} dangerouslySetInnerHTML={{__html: props.message}} />
             )}
           </div>
         ) : null}
       </>
-    );
-  };
+    )
+  }
 
-  const NewsLetterForm = () => (
-    <CustomForm status={status} message={''} onValidated={() => {}} />
-  );
+  // const NewsLetterForm = () => <CustomForm status={status} message={''} onValidated={() => {}} />
 
   return (
     <div className="footer-container">
-      <div className="footer-info">
+      {/* <div className="footer-info">
         {footerConf.showShopName ? (
           <div className="footer-community">
             <div className="sub-header">
-              {LABELS.STORE_NAME} NFT Marketplace
+              {LABELS.STORE_NAME} YoMe Marketplace
             </div>
-            <div className="footer-link">Powered by Metaplex and Solana</div>
+            <div className="footer-link">Powered by YoMe</div>
           </div>
         ) : null}
         {footerConf.components.map(component => (
@@ -119,12 +101,16 @@ export const Footer = () => {
             <NewsLetterForm />
           </div>
         ) : null}
-      </div>
+      </div> */}
       <div className="footer-foot">
         <div className="small-body footer-link">
-          2021 {LABELS.STORE_NAME} LLC, All rights reserved
+          2021{' '}
+          <a href="https://yome.social/" target="_blank" className="footer-link">
+            YOME
+          </a>
+          , All rights reserved
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
