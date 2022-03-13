@@ -231,7 +231,7 @@ export const ArtMinting = ({ id, onMint }: ArtMintingProps) => {
                 fontSize: '2rem',
               }}
             >
-              New editions have been minted please view your NFTs in{' '}
+              New editions have been minted please view your NFTs in<br/>
               <Link to="/artworks">My Items</Link>.
             </p>
             <Button
@@ -239,7 +239,7 @@ export const ArtMinting = ({ id, onMint }: ArtMintingProps) => {
                 await onMint();
                 setShowCongrats(false);
               }}
-              className="overlay-btn"
+              className="secondary-btn"
             >
               Got it
             </Button>
