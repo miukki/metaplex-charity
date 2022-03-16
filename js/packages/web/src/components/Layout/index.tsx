@@ -1,10 +1,10 @@
-import React from 'react';
-import { Layout } from 'antd';
+import React from 'react'
+import {Layout} from 'antd'
 
-import { AppBar } from '../AppBar';
-import { Footer } from '../Footer';
+import {AppBar} from '../AppBar'
+import {Footer} from '../Footer'
 
-const { Header, Content } = Layout;
+const {Header, Content} = Layout
 
 export const AppLayout = React.memo((props: any) => {
   return (
@@ -27,8 +27,8 @@ export const AppLayout = React.memo((props: any) => {
             {props.children}
           </Content>
         </Layout>
-        {/*<Footer />*/}
+        <Footer />
       </Layout>
     </>
-  );
-});
+  )
+})
