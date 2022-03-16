@@ -8,6 +8,7 @@ import {SetupView} from './setup'
 export const HomeView = () => {
   const {isLoading, store} = useMeta()
   const {isConfigured} = useStore()
+  console.log({store, isConfigured, isLoading})
 
   const showAuctions = (store && isConfigured) || isLoading
 

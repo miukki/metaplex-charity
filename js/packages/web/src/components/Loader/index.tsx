@@ -1,17 +1,25 @@
 import { useMeta } from '@oyster/common';
 import React, { FC } from 'react';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 export const LoaderProvider: FC = ({ children }) => {
   const { isLoading } = useMeta();
 
   return (
     <>
+    {isLoading ? <Box sx={{ width: '100%' }}>
+      <LinearProgress />
+    </Box> : null}
+      {/* 
       <div className={`loader-container ${isLoading ? 'active' : ''}`}>
         <div className="loader-block">
           <div className="loader-title">loading</div>
           <Spinner />
         </div>
-      </div>
+      </div> 
+      */}
       {children}
     </>
   );
